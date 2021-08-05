@@ -1,0 +1,19 @@
+13
+Pyronion, 40, dairy, meat, vegetable, 1, Flambé, 10, fire, burn, no
+Flamingarlic, 20, dairy, meat, vegetable, 1, Blue Fire, 5, fire, freeze, no
+Potatoad, 35, dairy, meat, vegetable, 1, Lick, 20, poison, poison, no
+Rootadpole, 25, dairy, meat, vegetable, 1, Swing, 10, normal, no, no
+Spoiloaf, 60, vegetable, fruit, wheat, 1, Mold Shot, 15, poison, poison, no
+Carrupture, 50, dairy, meat, vegetable, 1, Seppucarrot, 35, fire, burn, recoil
+Steacyro, 70, wheat, dairy, meat, 1, Unthaw, 20, ice, freeze, no
+Healeak, 45, dairy, meat, vegetable, 1, Drain, 10, plant, no, heal
+Strawbearry, 70, meat, vegetable, fruit, 1, Jam Slam, 15, plant, no, no
+Cubberry, 40, meat, vegetable, fruit, 1, Berry Bite, 20, plant, no, no
+Wafflood, 35, vegetable, fruit, wheat, 1, Sink, 15, water, no, no
+Kung Fougurt, 45, fruit, wheat, dairy, 1, Dairystsu, 20, normal, no, no
+Milkarate, 45, fruit, wheat, dairy, 1, Roundhouse, 10, normal, no, no
+
+Add more nommers above ^^
+Increase the first number by the number of Nommers you add
+Key:
+name, health, weakness, resistance, type, number of attacks (useless), attack name, base attack damage, UNIMPORTANT, effect to enemy, effect to self
