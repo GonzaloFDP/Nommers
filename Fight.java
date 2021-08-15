@@ -13,6 +13,8 @@ class Fight{
 	int enemyAttackChosen;
 	int faintedSwitchInLooper = 0;
 	int damageModifier;
+	int playerRandZap;
+	int enemyRandZap;
 	double damageDealtLocker = 0;
 	Random rand = new Random();
 
@@ -81,104 +83,128 @@ class Fight{
 		String enemyResistance = currentEnemyNommer().getResistance();
 		
 		if(whoAttacks.equals("player")){
-			if(currentNommer().getType().equals(enemyWeakness)){ //weakness
-				System.out.println(currentNommer() + " used " + currentNommer().getAttack() + "!");
-				double randFight = (double)rand.nextDouble() + 0.6;
-				randFight *= 2;
-				randFight = Math.round(randFight * 100);
-				randFight /= 100;
-				double damageDealt = currentNommer().getBaseAttackDamage() * randFight;
-				damageDealt = (int)Math.round(damageDealt);
-				System.out.println("Attack is stronger than usual. \nAttack Damage multiplied by " + randFight + ".\n");
-				currentEnemyNommer().setHealth(currentEnemyNommer().getCurrentHealth() - (int)Math.round(damageDealt));
-				System.out.println(currentNommer() + " did " + damageDealt + " damage to " + currentEnemyNommer()+ ". They now have " + currentEnemyNommer().getCurrentHealth() + " health\n");
-				damageDealtLocker = damageDealt;
-			} else if(currentNommer().getType().equals(enemyResistance)){ //resistance
-				System.out.println(currentNommer() + " used " + currentNommer().getAttack() + "!");
-				double randFight = (double)rand.nextDouble() + 0.6;
-				randFight /= 2;
-				randFight = Math.round(randFight * 100);
-				randFight /= 100;
-				double damageDealt = currentNommer().getBaseAttackDamage() * randFight;
-				damageDealt = (int)Math.round(damageDealt);
-				System.out.println("Attack is weaker than usual. \nAttack Damage multiplied by " + randFight + ".\n");
-				currentEnemyNommer().setHealth(currentEnemyNommer().getCurrentHealth() - (int)Math.round(damageDealt));
-				System.out.println(currentNommer() + " did " + damageDealt + " damage to " + currentEnemyNommer()+ ". They now have " + currentEnemyNommer().getCurrentHealth() + " health\n");
-				damageDealtLocker = damageDealt;
-			} else { //none
-				System.out.println(currentNommer() + " used " + currentNommer().getAttack() + "!");
-				double damageDealt = currentNommer().getBaseAttackDamage();
-				damageDealt = (int)Math.round(damageDealt);
-				currentEnemyNommer().setHealth(currentEnemyNommer().getCurrentHealth() - (int)Math.round(damageDealt));
-				System.out.println(currentNommer() + " did " + damageDealt + " damage to " + currentEnemyNommer()+ ". They now have " + currentEnemyNommer().getCurrentHealth() + " health\n");
-				damageDealtLocker = damageDealt;
+			if(currentNommer().getIsZapped()){
+				playerRandZap = rand.nextInt(10);
 			}
-		//status effect stuff
-			if(!currentNommer().getAttackEffect().equals("none") && currentEnemyNommer().getStatusEffects().size() == 0){
-					if(rand.nextInt()%2 == 0){
-						System.out.println("Wait a second! This move is causing an effect");
-					//attack effects
-							if(!currentNommer().getAttackEffect().equals("none")){
-								currentEnemyNommer().setStatusEffect(currentNommer().getAttackEffect());
-							}
-					}
-			}
-			if(!currentNommer().getSelfEffect().equals("none")){
-				if(currentNommer().getSelfEffect().equals("recoil")){
-					currentNommer().recoil(damageDealtLocker);
-				} else if (currentNommer().getSelfEffect().equals("heal")){
-					currentNommer().heal(damageDealtLocker);
+			if(!currentNommer().getIsZapped() || playerRandZap < 3){
+
+				if(currentNommer().getType().equals(enemyWeakness)){ //weakness
+					System.out.println(currentNommer() + " used " + currentNommer().getAttack() + "!");
+					double randFight = (double)rand.nextDouble() + 0.6;
+					randFight *= 2;
+					randFight = Math.round(randFight * 100);
+					randFight /= 100;
+					double damageDealt = currentNommer().getBaseAttackDamage() * randFight;
+					damageDealt = (int)Math.round(damageDealt);
+					System.out.println("Attack is stronger than usual. \nAttack Damage multiplied by " + randFight + ".\n");
+					currentEnemyNommer().setHealth(currentEnemyNommer().getCurrentHealth() - (int)Math.round(damageDealt));
+					System.out.println(currentNommer() + " did " + damageDealt + " damage to " + currentEnemyNommer()+ ". The latter now has " + currentEnemyNommer().getCurrentHealth() + " health\n");
+					damageDealtLocker = damageDealt;
+				} else if(currentNommer().getType().equals(enemyResistance)){ //resistance
+					System.out.println(currentNommer() + " used " + currentNommer().getAttack() + "!");
+					double randFight = (double)rand.nextDouble() + 0.6;
+					randFight /= 2;
+					randFight = Math.round(randFight * 100);
+					randFight /= 100;
+					double damageDealt = currentNommer().getBaseAttackDamage() * randFight;
+					damageDealt = (int)Math.round(damageDealt);
+					System.out.println("Attack is weaker than usual. \nAttack Damage multiplied by " + randFight + ".\n");
+					currentEnemyNommer().setHealth(currentEnemyNommer().getCurrentHealth() - (int)Math.round(damageDealt));
+					System.out.println(currentNommer() + " did " + damageDealt + " damage to " + currentEnemyNommer()+ ". The latter now has " + currentEnemyNommer().getCurrentHealth() + " health\n");
+					damageDealtLocker = damageDealt;
+				} else { //none
+					System.out.println(currentNommer() + " used " + currentNommer().getAttack() + "!");
+					double damageDealt = currentNommer().getBaseAttackDamage();
+					damageDealt = (int)Math.round(damageDealt);
+					currentEnemyNommer().setHealth(currentEnemyNommer().getCurrentHealth() - (int)Math.round(damageDealt));
+					System.out.println(currentNommer() + " did " + damageDealt + " damage to " + currentEnemyNommer()+ ". The latter now has " + currentEnemyNommer().getCurrentHealth() + " health\n");
+					damageDealtLocker = damageDealt;
 				}
+			//status effect stuff
+				if(!currentNommer().getAttackEffect().equals("none") && currentEnemyNommer().getStatusEffects().size() == 0){
+						if(rand.nextInt()%2 == 0){
+						//attack effects
+								if(!currentNommer().getAttackEffect().equals("none")){
+									currentEnemyNommer().setStatusEffect(currentNommer().getAttackEffect());
+									System.out.println("Wait a second! This move is causing a(n) " + currentNommer().getAttackEffect() + " effect");
+								}
+						}
+				}
+				if(!currentNommer().getSelfEffect().equals("none")){
+					if(currentNommer().getSelfEffect().equals("recoil")){
+						currentNommer().recoil(damageDealtLocker);
+					} else if (currentNommer().getSelfEffect().equals("heal")){
+						currentNommer().heal(damageDealtLocker);
+					} else if (currentNommer().getSelfEffect().equals("repeat")){
+						currentNommer().repeat(damageDealtLocker);
+					}
+				}
+			} else {
+				System.out.println("The attack missed!");
 			}
+		System.out.println("Player's status effect " + currentNommer().getStatusEffects());
+
 	} else if (whoAttacks.equals("enemy")){
-			if(currentEnemyNommer().getType().equals(playerWeakness)){ //weakness
-				System.out.println(currentEnemyNommer() + " used " + currentEnemyNommer().getAttack() + "!");
-				double randFight = (double)rand.nextDouble() + 0.6;
-				randFight *= 2;
-				randFight = Math.round(randFight * 100);
-				randFight /= 100;
-				double damageDealt = currentEnemyNommer().getBaseAttackDamage() * randFight;
-				damageDealt = (int)Math.round(damageDealt);
-				System.out.println("Attack is stronger than usual. \nAttack Damage multiplied by " + randFight + ".\n");
-				currentNommer().setHealth(currentNommer().getCurrentHealth() - (int)Math.round(damageDealt));
-				System.out.println(currentEnemyNommer() + " did " + damageDealt + " damage to " + currentNommer()+ ". They now have " + currentNommer().getCurrentHealth() + " health\n");
-			} else if(currentEnemyNommer().getType().equals(playerResistance)){ //resistance
-				System.out.println(currentEnemyNommer() + " used " + currentEnemyNommer().getAttack() + "!");
-				double randFight = (double)rand.nextDouble() + 0.6;
-				randFight /= 2;
-				randFight = Math.round(randFight * 100);
-				randFight /= 100;
-				double damageDealt = currentEnemyNommer().getBaseAttackDamage() * randFight;
-				damageDealt = (int)Math.round(damageDealt);
-				System.out.println("Attack is weaker than usual. \nAttack Damage multiplied by " + randFight + ".\n");
-				currentNommer().setHealth(currentNommer().getCurrentHealth() - (int)Math.round(damageDealt));
-				System.out.println(currentEnemyNommer() + " did " + damageDealt + " damage to " + currentNommer()+ ". They now have " + currentNommer().getCurrentHealth() + " health\n");
-			} else { //none
-				System.out.println(currentEnemyNommer() + " used " + currentEnemyNommer().getAttack() + "!");
-				double damageDealt = currentEnemyNommer().getBaseAttackDamage();
-				damageDealt = (int)Math.round(damageDealt);
-				currentNommer().setHealth(currentNommer().getCurrentHealth() - (int)Math.round(damageDealt));
-				System.out.println(currentEnemyNommer() + " did " + damageDealt + " damage to " + currentNommer()+ ". They now have " + currentNommer().getCurrentHealth() + " health\n");
-			}
-		//status effect stuff
-		if(!currentEnemyNommer().getAttackEffect().equals("none") && currentNommer().getStatusEffects().size() == 0){
-					if(rand.nextInt()%2 == 0){
-						System.out.println("Wait a second! This move is causing an effect");
-					//attack effects
-							if(!currentEnemyNommer().getAttackEffect().equal("none")){
-								currentNommer().setStatusEffect(currentEnemyNommer().getAttackEffect());
-							}
-					}
-			}
-			if(!currentEnemyNommer().getSelfEffect().equals("none")){
-
-				if(currentEnemyNommer().getSelfEffect().equals("recoil")){
-					currentEnemyNommer().recoil(damageDealtLocker);
-
-				} else if (currentEnemyNommer().getSelfEffect().equals("heal")){
-					currentEnemyNommer().heal(damageDealtLocker);
+		if(currentEnemyNommer().getIsZapped()){
+				int enemyRandZap = rand.nextInt(10);
+		}
+		if(!currentEnemyNommer().getIsZapped() || enemyRandZap < 3){
+				if(currentEnemyNommer().getType().equals(playerWeakness)){ //weakness
+					System.out.println(currentEnemyNommer() + " used " + currentEnemyNommer().getAttack() + "!");
+					double randFight = (double)rand.nextDouble() + 0.6;
+					randFight *= 2;
+					randFight = Math.round(randFight * 100);
+					randFight /= 100;
+					double damageDealt = currentEnemyNommer().getBaseAttackDamage() * randFight;
+					damageDealt = (int)Math.round(damageDealt);
+					System.out.println("Attack is stronger than usual. \nAttack Damage multiplied by " + randFight + ".\n");
+					currentNommer().setHealth(currentNommer().getCurrentHealth() - (int)Math.round(damageDealt));
+					System.out.println(currentEnemyNommer() + " did " + damageDealt + " damage to " + currentNommer()+ ". The latter now has " + currentNommer().getCurrentHealth() + " health\n");
+					damageDealtLocker = damageDealt;
+				} else if(currentEnemyNommer().getType().equals(playerResistance)){ //resistance
+					System.out.println(currentEnemyNommer() + " used " + currentEnemyNommer().getAttack() + "!");
+					double randFight = (double)rand.nextDouble() + 0.6;
+					randFight /= 2;
+					randFight = Math.round(randFight * 100);
+					randFight /= 100;
+					double damageDealt = currentEnemyNommer().getBaseAttackDamage() * randFight;
+					damageDealt = (int)Math.round(damageDealt);
+					System.out.println("Attack is weaker than usual. \nAttack Damage multiplied by " + randFight + ".\n");
+					currentNommer().setHealth(currentNommer().getCurrentHealth() - (int)Math.round(damageDealt));
+					System.out.println(currentEnemyNommer() + " did " + damageDealt + " damage to " + currentNommer()+ ". The latter now has " + currentNommer().getCurrentHealth() + " health\n");
+					damageDealtLocker = damageDealt;
+				} else { //none
+					System.out.println(currentEnemyNommer() + " used " + currentEnemyNommer().getAttack() + "!");
+					double damageDealt = currentEnemyNommer().getBaseAttackDamage();
+					damageDealt = (int)Math.round(damageDealt);
+					currentNommer().setHealth(currentNommer().getCurrentHealth() - (int)Math.round(damageDealt));
+					System.out.println(currentEnemyNommer() + " did " + damageDealt + " damage to " + currentNommer()+ ". The latter now has " + currentNommer().getCurrentHealth() + " health\n");
+					damageDealtLocker = damageDealt;
 				}
+			//status effect stuff
+			if(!currentEnemyNommer().getAttackEffect().equals("none") && currentNommer().getStatusEffects().size() == 0){
+						if(rand.nextInt()%2 == 0){
+						//attack effects
+								if(!currentEnemyNommer().getAttackEffect().equals("none")){
+									currentNommer().setStatusEffect(currentEnemyNommer().getAttackEffect());
+									System.out.println("Wait a second! This move is causing an " + currentEnemyNommer().getAttackEffect() + " effect");
+								}
+						}
+				}
+				if(!currentEnemyNommer().getSelfEffect().equals("none")){
+
+					if(currentEnemyNommer().getSelfEffect().equals("recoil")){
+						currentEnemyNommer().recoil(damageDealtLocker);
+					} else if (currentEnemyNommer().getSelfEffect().equals("heal")){
+						currentEnemyNommer().heal(damageDealtLocker);
+					} else if (currentEnemyNommer().getSelfEffect().equals("repeat")){
+						currentEnemyNommer().repeat(damageDealtLocker);
+					}
+				}
+			} else {
+				System.out.println("The attack missed!");
 			}
+			System.out.println("Enemy's status effect " + currentEnemyNommer().getStatusEffects());
 		}
 	}
 
@@ -294,8 +320,8 @@ class Fight{
 			currentNommer().burn();
 		} else if(currentNommer().getStatusEffects().equals("poison")){
 			currentNommer().poison();
-		} else if(currentNommer().getStatusEffects().equals("freeze")){
-			currentNommer().freeze();
+		} else if(currentNommer().getStatusEffects().equals("zap")){
+			currentNommer().zap();
 		} else {
 
 		}
@@ -310,8 +336,8 @@ class Fight{
 			currentEnemyNommer().burn();
 		} else if(currentEnemyNommer().getStatusEffects().equals("poison")){
 			currentEnemyNommer().poison();
-		} else if(currentEnemyNommer().getStatusEffects().equals("freeze")){
-			currentEnemyNommer().freeze();
+		} else if(currentEnemyNommer().getStatusEffects().equals("zap")){
+			currentEnemyNommer().zap();
 		} else {
 
 		}

@@ -16,6 +16,7 @@ class Nommer {
 	private String attackType;
 	private String attackEffect = "none";
 	private String selfEffect = "none";
+	private boolean isZapped = false;
 	/*
 	private String isBurned = "no";
 	private int burnCounter = 0;
@@ -65,7 +66,7 @@ class Nommer {
 			System.out.println(name + " extinguished the fire");
 			int FXRemover = statusEffects.indexOf("burned");
 			statusEffects.remove(FXRemover);
-			
+			turnsWithFX = 0;
 		}
 		return 73;
 	}
@@ -79,20 +80,22 @@ class Nommer {
 			System.out.println(name + " made the bad poison go away");
 			int FXRemover = statusEffects.indexOf("poison");
 			statusEffects.remove(FXRemover);
+			turnsWithFX = 0;
 		}
 		return 73;
 	}
 
-	public int freeze(){
+	public int zap(){
 		if(turnsWithFX < 3){
-			health -= health/5;
-			System.out.println(name + " got frozen. 1/5 of their health got taken. They now have " + health + " health");
+			isZapped = true;
+			System.out.println(name + " got zapped. They might not be able to move during the next 3 attacks");
 			turnsWithFX++;
-			return health;
 		} else {
-			System.out.println(name + " broke out of the glass");
-			int FXRemover = statusEffects.indexOf("freeze");
+			System.out.println(name + " cut the current");
+			int FXRemover = statusEffects.indexOf("zap");
 			statusEffects.remove(FXRemover);
+			turnsWithFX = 0;
+			isZapped = false;
 		}
 		return 73;
 	}
@@ -109,10 +112,11 @@ class Nommer {
 		return health;
 	}
 	
-	public int repeat(){
+	public int repeat(double damageDealt){
 		Random randomRepeat = new Random();
-		int timesHit = randomRepeat.nextInt(5) + 2;
-		System.out.println(timesHit);
+		int timesHit = randomRepeat.nextInt(5) + 1;
+		int totalDamageDealt = timesHit * (int) damageDealt;
+		System.out.println("The attack hits " + timesHit + " more time(s). It deals " + totalDamageDealt + " more damage");
 		return timesHit;
 	}
 
@@ -169,6 +173,14 @@ class Nommer {
 
 	public String getSelfEffect(){
 		return selfEffect;
+	}
+
+	public boolean getIsZapped(){
+		if(isZapped){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public ArrayList<String> getStatusEffects(){
