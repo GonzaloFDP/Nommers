@@ -17,6 +17,7 @@ class Fight{
 	int enemyRandZap;
 	double damageDealtLocker = 0;
 	Random rand = new Random();
+	String whoseTurn = "";
 
 	public Nommer currentNommer(){
 		return fightArena.getTeam().get(nowNommer);
@@ -48,6 +49,7 @@ class Fight{
 	}
 
 	public void playerTurn(){
+		whoseTurn = "player";
 		System.out.println("Do you want to attack (1) or switch out your current Nommer (2)"); //once I make more attacks this will take in attack ArrayList
 
 		Scanner playerDecision = new Scanner(System.in);
@@ -61,16 +63,18 @@ class Fight{
 			// Ask which ones to use (don't allow if the Nommer is dead)
 			// Set it to the current Nommer
 		}
-		playerEndOfRoundChecker();
-		enemyEndOfRoundChecker();
+		//playerEndOfRoundChecker();
+		//enemyEndOfRoundChecker();
 
 	}
 
 	public void enemyTurn(){
+		whoseTurn = "enemy";
 		//funky AI stuff future me will do
+		//i already did B) g3t r3kt
 		attackPhase("enemy");
-		playerEndOfRoundChecker();
-		enemyEndOfRoundChecker();
+		//playerEndOfRoundChecker();
+		//enemyEndOfRoundChecker();
 	}
 
 	public void attackPhase(String whoAttacks){
@@ -83,9 +87,11 @@ class Fight{
 		String enemyResistance = currentEnemyNommer().getResistance();
 		
 		if(whoAttacks.equals("player")){
+			playerRandZap = 0;
 			if(currentNommer().getIsZapped()){
 				playerRandZap = rand.nextInt(10);
 			}
+			System.out.println("Player RandZap: " + playerRandZap);
 			if(!currentNommer().getIsZapped() || playerRandZap < 3){
 
 				if(currentNommer().getType().equals(enemyWeakness)){ //weakness
@@ -142,12 +148,14 @@ class Fight{
 			} else {
 				System.out.println("The attack missed!");
 			}
-		System.out.println("Player's status effect " + currentNommer().getStatusEffects());
+		
 
 	} else if (whoAttacks.equals("enemy")){
+		enemyRandZap = 0;
 		if(currentEnemyNommer().getIsZapped()){
-				int enemyRandZap = rand.nextInt(10);
+				enemyRandZap = rand.nextInt(10);
 		}
+		System.out.println("Enemy RandZap: " + enemyRandZap);
 		if(!currentEnemyNommer().getIsZapped() || enemyRandZap < 3){
 				if(currentEnemyNommer().getType().equals(playerWeakness)){ //weakness
 					System.out.println(currentEnemyNommer() + " used " + currentEnemyNommer().getAttack() + "!");
@@ -204,36 +212,49 @@ class Fight{
 			} else {
 				System.out.println("The attack missed!");
 			}
-			System.out.println("Enemy's status effect " + currentEnemyNommer().getStatusEffects());
+			
 		}
 	}
 
+//switch and fainting shtuff
 
 	public void switchOut(String whoSwitches, int faintOrSwitch){
 		
 		if(whoSwitches.equals("player")){
 
+			Nommer prevNommer = currentNommer() ;
+
 			if(faintOrSwitch == 0){ //faint
-			System.out.println(currentNommer() + " fainted!");
+				System.out.println(currentNommer() + " fainted!");
+				System.out.println("Player Status Effects cleared");
+				currentNommer().clearStatusEffect();
 			} else if (faintOrSwitch == 1) { //switch
-			System.out.println(currentNommer() + " switched out!");
+		 		System.out.println(currentNommer() + " switched out!");
 			}
 
 			while(faintedSwitchInLooper == 0){
-			System.out.println("Who will replace " + currentNommer() + " in the arena?\n(Here are your Nommers: " + fightArena.getTeam() + " \nDon't forget to type in their cooresponding number, not their name!)");
-			Scanner nommerFightChoose = new Scanner(System.in);
-			nommerChosenToFight = nommerFightChoose.nextInt();
+	  		System.out.println("Who will replace " + currentNommer() + " in the arena?\n(Here are your Nommers: " + fightArena.getTeam() + " \nDon't forget to type in their cooresponding number, not their name!)");
+	  		Scanner nommerFightChoose = new Scanner(System.in);
+				nommerChosenToFight = nommerFightChoose.nextInt();
 			if(fightArena.getTeam().get(nommerChosenToFight-1).getHasFainted().equals("yes")){
 				System.out.println("That Nommer has already fainted, please choose another one\n");
 				faintedSwitchInLooper = 0;
 			} else if (!fightArena.getTeam().get(nommerChosenToFight-1).getHasFainted().equals("yes")){
 				faintedSwitchInLooper = 1;
+				}
 			}
+			if(fightArena.getTeam().get(nommerChosenToFight-1).getName().equals(currentNommer().getName())){
+				nowNommer = nommerChosenToFight - 1;
+				System.out.println("Player Status Effects not cleared, since it is the same Nommer");
+			} else {
+				nowNommer = nommerChosenToFight - 1;
+				currentNommer().clearStatusEffect();
+				System.out.println("Player Status Effects cleared");
 			}
-			nowNommer = nommerChosenToFight - 1;
 			System.out.printf("You choose %s!\n", fightArena.getTeam().get(nommerChosenToFight-1));
 			System.out.printf("Your %s has %d health. The enemy %s has %d health\n", currentNommer(), currentNommer().getCurrentHealth(), currentEnemyNommer(), currentEnemyNommer().getCurrentHealth());
 			faintedSwitchInLooper = 0;
+
 		} else if (whoSwitches.equals("enemy")){
 
 			if(faintOrSwitch == 0){ //faint
@@ -243,7 +264,7 @@ class Fight{
 			}
 
 			int enemyRandint = rand.nextInt(5);
-			System.out.println(enemyRandint);
+			//System.out.println(enemyRandint);
 			//System.out.println(currentEnemyNommer().getHasFainted());
 
 
@@ -275,7 +296,7 @@ class Fight{
 				}	else if (enemyRandint < 4){
 						for(int i = 0; i < fightArena.getEnemies().size(); i++){
 							if(!fightArena.getEnemies().get(i).getHasFainted().equals("yes")){
-								System.out.println(fightArena.getEnemies().get(i).getHasFainted());
+								//System.out.println(fightArena.getEnemies().get(i).getHasFainted());
 								enemyNowNommer = i;
 								System.out.println(currentEnemyNommer() + " switched in!");
 								break;
@@ -286,7 +307,7 @@ class Fight{
 				} else if (enemyRandint == 4){
 						for(int i = 0; i < fightArena.getEnemies().size(); i++){
 							if(fightArena.getEnemies().get(i).getType().equals(currentNommer().getResistance()) && !fightArena.getEnemies().get(i).getHasFainted().equals("yes")){
-								System.out.println(fightArena.getEnemies().get(i).getHasFainted());
+								//System.out.println(fightArena.getEnemies().get(i).getHasFainted());
 								enemyNowNommer = i;
 								System.out.println(currentEnemyNommer() + " switched in!");
 								break;
@@ -307,44 +328,89 @@ class Fight{
 								}
 							//	System.out.println("You won :D");
 						}
+						
 					}
+				currentEnemyNommer().clearStatusEffect();
+				System.out.println("Enemy Status Effects cleared");
 				} 
 
 			
 		}
 	
 
-
-	public void playerEndOfRoundChecker(){
-		if(currentNommer().getStatusEffects().equals("burn")){
-			currentNommer().burn();
-		} else if(currentNommer().getStatusEffects().equals("poison")){
-			currentNommer().poison();
-		} else if(currentNommer().getStatusEffects().equals("zap")){
-			currentNommer().zap();
-		} else {
-
-		}
+	public void playerFaintOrSwitchCheck(){
 		if(currentNommer().getCurrentHealth() <= 0){
 			currentNommer().setHasFainted("yes");
 			switchOut("player",0);
 		}
 	}
 
-	public void enemyEndOfRoundChecker(){
-		if(currentEnemyNommer().getStatusEffects().equals("burn")){
-			currentEnemyNommer().burn();
-		} else if(currentEnemyNommer().getStatusEffects().equals("poison")){
-			currentEnemyNommer().poison();
-		} else if(currentEnemyNommer().getStatusEffects().equals("zap")){
-			currentEnemyNommer().zap();
+	public void playerEndOfRoundChecker(){
+		System.out.println("Turns with effects: " + currentNommer().getTurnsWithEffect());
+		if(currentNommer().getStatusEffects().contains("burn")){
+			currentNommer().burn();
+		} else if(currentNommer().getStatusEffects().contains("poison")){
+			currentNommer().poison();
+		} else if(currentNommer().getStatusEffects().contains("zap")){
+			currentNommer().zap();
 		} else {
 
 		}
+		
+	}
+
+	public void enemyFaintOrSwitchCheck(){
 		if(currentEnemyNommer().getCurrentHealth() <= 0){
 			currentEnemyNommer().setHasFainted("yes");
 			switchOut("enemy",0);
 		}
+	}
+
+	public void enemyEndOfRoundChecker(){
+		System.out.println("Turns with effects: " + currentEnemyNommer().getTurnsWithEffect());
+		if(currentEnemyNommer().getStatusEffects().contains("burn")){
+			currentEnemyNommer().burn();
+		} else if(currentEnemyNommer().getStatusEffects().contains("poison")){
+			currentEnemyNommer().poison();
+		} else if(currentEnemyNommer().getStatusEffects().contains("zap")){
+			currentEnemyNommer().zap();
+		} else {
+
+		}
+
+		System.out.println("\n" + currentNommer().getName() + " has " + currentNommer().getCurrentHealth() + " current health and a " + currentNommer().getStatusEffects() + " status effect");
+		System.out.println(currentEnemyNommer().getName() + " has " + currentEnemyNommer().getCurrentHealth() + " current health and a " + currentEnemyNommer().getStatusEffects() + " status effect");
+	}
+
+	public int mutualEndOfRoundChecker(){
+		//----------- Player lose check -----------
+			int faintSum = 0;
+			for(int i = 0; i < fightArena.getTeam().size(); i++){
+				if(fightArena.getTeam().get(i).getHasFainted().equals("yes")){
+					faintSum ++;
+				}
+			}
+			if(faintSum >= fightArena.getTeam().size()){
+				//return player lost
+				return 1;
+			} else {
+				//nothing
+			}
+
+		//----------- Enemy lose check -----------
+			faintSum = 0;
+			for(int i = 0; i < fightArena.getEnemies().size(); i++){
+				if(fightArena.getEnemies().get(i).getHasFainted().equals("yes")){
+					faintSum ++;
+				}
+			}
+			if(faintSum >= fightArena.getEnemies().size()){
+				//return enemy lost
+				return 2;
+			} else {
+				//nothing
+				return 0;
+			}
 	}
 
 

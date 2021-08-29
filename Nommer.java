@@ -52,18 +52,24 @@ class Nommer {
 	}
 
 	public String returnDescription(){
-		return name + ". A " + type + " type, weak against " + weakness + " types and resistance against " + resistance + " types. It has " + startingHealth + " health. It's main attack is " + attack + ", which is a " + attackType + " type attack that deals " + attackDamage + " base damage. This attack has " + attackEffect + " effect on the enemy. It has " + selfEffect + " effect on the user";
+		return name + ". A " + type + " type, weak against " + weakness + " types and resistance against " + resistance + " types. It has " + startingHealth + " health. It's main attack is " + attack + ", which deals " + attackDamage + " base damage. This attack's effect on the enemy is " + attackEffect + ". It's effect on the user is " + selfEffect + ".";
 	}
 
 	//status effects
 	public int burn(){
-		if(turnsWithFX < 6){
+		if(turnsWithFX<1){
 			health -= health/10;
-			System.out.println(name + " got burned. 1/10 of their health got taken. They now have " + health + " health");
+			System.out.println("\n" + name + " got burned. 1/10 of their health got taken. They now have " + health + " health\n");
+			turnsWithFX++;
+			return health;
+		}
+		else if(turnsWithFX < 6){
+			System.out.println("\n" + name + " got burned. 1/10 of their health got taken. They now have " + health + " health\n");
+			health -= health/10;
 			turnsWithFX++;
 			return health;
 		} else {
-			System.out.println(name + " extinguished the fire");
+			System.out.println("\n" + name + " extinguished the fire");
 			int FXRemover = statusEffects.indexOf("burned");
 			statusEffects.remove(FXRemover);
 			turnsWithFX = 0;
@@ -71,13 +77,19 @@ class Nommer {
 		return 73;
 	}
 	public int poison(){
-		if(turnsWithFX < 4){
+		if(turnsWithFX<1){
 			health -= health/7;
-			System.out.println(name + " got poisoned. 1/7 of their health got taken. They now have " + health + " health");
+			System.out.println("\n" + name + " got poisoned. 1/7 of their health got taken. They now have " + health + " health\n");
+			turnsWithFX++;
+			return health;
+		}
+		else if(turnsWithFX < 4){
+			System.out.println("\n" + name + " got poisoned. 1/7 of their health got taken. They now have " + health + " health\n");
+			health -= health/7;
 			turnsWithFX++;
 			return health;
 		} else {
-			System.out.println(name + " made the bad poison go away");
+			System.out.println("\n" + name + " made the bad poison go away\n");
 			int FXRemover = statusEffects.indexOf("poison");
 			statusEffects.remove(FXRemover);
 			turnsWithFX = 0;
@@ -86,12 +98,16 @@ class Nommer {
 	}
 
 	public int zap(){
+		if(turnsWithFX<1){
+			isZapped = true;
+			System.out.println("\n" + name + " got zapped. They might not be able to move during the next 3 attacks\n");
+			turnsWithFX++;
+		}
 		if(turnsWithFX < 3){
 			isZapped = true;
-			System.out.println(name + " got zapped. They might not be able to move during the next 3 attacks");
 			turnsWithFX++;
 		} else {
-			System.out.println(name + " cut the current");
+			System.out.println("\n" + name + " cut the current\n");
 			int FXRemover = statusEffects.indexOf("zap");
 			statusEffects.remove(FXRemover);
 			turnsWithFX = 0;
@@ -175,6 +191,10 @@ class Nommer {
 		return selfEffect;
 	}
 
+	public int getTurnsWithEffect(){
+		return turnsWithFX;
+	}
+
 	public boolean getIsZapped(){
 		if(isZapped){
 			return true;
@@ -200,6 +220,10 @@ class Nommer {
 
 	public void setStatusEffect(String s){
 		statusEffects.add(s);
+	}
+
+	public void clearStatusEffect(){
+		statusEffects.clear();
 	}
 
 

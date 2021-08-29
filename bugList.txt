@@ -1,0 +1,10 @@
+8/21/21:
+	- status effects carry over to other Nommers
+
+8/28/20:
+	FIXED (turns out I forgot to switch the "no" to a "none" in the .txt file oops)
+		- when using heal it gives the other Nommer
+			a "no" status effect
+				- Prevents from getting another status effect added because it
+					is occupied by the "no"
+			

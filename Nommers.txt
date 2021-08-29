@@ -2,16 +2,16 @@
 Pyronion, 40, dairy, meat, vegetable, 1, Flambé, 10, fire, burn, none
 Flamingarlic, 20, dairy, meat, vegetable, 1, Pelt, 2, fire, none, repeat
 Potatoad, 35, dairy, meat, vegetable, 1, Lick, 20, poison, poison, none
-Rootadpole, 25, dairy, meat, vegetable, 1, Swing, 10, normal, none, none
 Spoiloaf, 60, vegetable, fruit, wheat, 1, Mold Shot, 15, poison, poison, none
-Carrupture, 50, dairy, meat, vegetable, 1, Seppucarrot, 35, fire, burn, recoil
+Carrupture, 50, dairy, meat, vegetable, 1, Seppucarrot, 25, fire, burn, recoil
 Zappork, 70, wheat, dairy, meat, 1, Taze, 20, ice, zap, none
-Healeak, 45, dairy, meat, vegetable, 1, Drain, 10, plant, no, heal
+Healeak, 45, dairy, meat, vegetable, 1, Drain, 10, plant, none, heal
 Strawbearry, 70, meat, vegetable, fruit, 1, Jam Slam, 15, plant, none, none
 Cubberry, 40, meat, vegetable, fruit, 1, Berry Bite, 20, plant, none, none
-Elecroussant, 35, vegetable, fruit, wheat, 1, Sink, 15, water, zap, none
+Elecroussant, 35, vegetable, fruit, wheat, 1, Shock, 15, water, zap, none
 Kung Fougurt, 45, fruit, wheat, dairy, 1, Dairystsu, 20, normal, none, none
 Milkarate, 45, fruit, wheat, dairy, 1, Roundhouse, 10, normal, none, none
+Pastarachnid, 45, vegetable, fruit, wheat, 1, Venomunch, 15, poison, poison, none
 
 Add more nommers above ^^
 Increase the first number by the number of Nommers you add

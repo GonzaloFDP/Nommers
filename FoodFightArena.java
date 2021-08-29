@@ -6,8 +6,11 @@ class FoodFightArena {
 	private static ArrayList <Nommer> Nommerary = new ArrayList <Nommer>();
 	private static ArrayList <Nommer> team = new ArrayList <Nommer>();
 	private static ArrayList <Nommer> enemy = new ArrayList <Nommer>();
+	
 
 	public static void	loadNommers(){
+		int showDesc1Or2;
+		Scanner showDesc = new Scanner(System.in);
 		Scanner file = null;
 
 		try {
@@ -21,16 +24,22 @@ class FoodFightArena {
 		numNommers = Integer.parseInt(file.nextLine());
 
 		//print out the description for each Nommer with a wait time of 0.5 sec
+		System.out.println("Do you want to see all the descriptions for the Nommers? (1 for yes, 2 for no)");
+		showDesc1Or2 = showDesc.nextInt();
 
 		try {
 			for (int i = 0; i < numNommers; i++){
 
-				Thread.sleep(500);
-
 				String nommerVals = file.nextLine();
 				Nommerary.add(new Nommer(nommerVals));
-				System.out.println(Nommerary.get(i).returnDescription() + "\n");
-				
+				if(showDesc1Or2 == 1){
+					System.out.println(Nommerary.get(i).returnDescription() + "\n");
+					Thread.sleep(500);
+				} else if(showDesc1Or2 == 2) {
+
+				} else {
+					
+				}
 			}
 		}
 		catch (Exception e){
@@ -47,7 +56,7 @@ class FoodFightArena {
 	} */
 
 	public static void selectTeam(){
-		System.out.printf("OI THERE CHAP, I got %d Nommers for ye to choose from.\nType in the number cooresponding to the Nommer you want.\n\nAlso, if you want to see type advantages and resistances, pop into the code and look at the advantage.draw\nand the resistance.draw files\n\n", Nommerary.size());
+		System.out.printf("OI THERE CHAP!\n Name's Jimmothinian\n I got %d Nommers for ye to choose from.\nType in the number cooresponding to the Nommer you want.\n\nAlso, if you want to see type advantages and resistances, pop into the code and look at the advantage.draw\nand the resistance.draw files\n\n", Nommerary.size());
 		Scanner nommerChoose = new Scanner(System.in);
 		System.out.println(Nommerary);
 		for(int i = 0; i < 4; i++){
