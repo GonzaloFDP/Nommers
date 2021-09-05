@@ -118,13 +118,13 @@ class Nommer {
 
 	public int recoil(double damageDealt){
 		health -= (int)damageDealt/3;
-		System.out.println(name + " got damaged by the recoil. They now have " + health + " health");
+		System.out.println("\n" + name + " got damaged by the recoil. They now have " + health + " health");
 		return health;
 	}
 
 	public int heal(double damageDealt){
 		health += (int) damageDealt/3;
-		System.out.println(name + " healed themselves. They now have " + health + " health");
+		System.out.println("\n" + name + " healed themselves. They now have " + health + " health");
 		return health;
 	}
 	
@@ -132,8 +132,8 @@ class Nommer {
 		Random randomRepeat = new Random();
 		int timesHit = randomRepeat.nextInt(5) + 1;
 		int totalDamageDealt = timesHit * (int) damageDealt;
-		System.out.println("The attack hits " + timesHit + " more time(s). It deals " + totalDamageDealt + " more damage");
-		return timesHit;
+		System.out.println("\nThe attack hits " + timesHit + " more time(s). It deals " + totalDamageDealt + " more damage");
+		return totalDamageDealt;
 	}
 
 

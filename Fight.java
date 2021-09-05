@@ -6,6 +6,8 @@ class Fight{
 	private ArrayList<Nommer> defeatedEnemies = new ArrayList<Nommer>();
 	private ArrayList<Nommer> defeatedPlayerNommers = new ArrayList<Nommer>();
 	FoodFightArena fightArena = new FoodFightArena();
+	int playerFaintSum = 0;
+	int enemyFaintSum = 0;
 	int nowNommer = 0;
 	int enemyNowNommer = 0;
 	int nommerChosenToFight;
@@ -77,6 +79,46 @@ class Fight{
 		//enemyEndOfRoundChecker();
 	}
 
+
+
+	//------------------------------ Mutual End of Round Checker ------------------------------
+	
+	public int mutualEndOfRoundChecker(){
+		//----------- Player lose check -----------
+			playerFaintSum = 0;
+			for(int i = 0; i < fightArena.getTeam().size(); i++){
+				if(fightArena.getTeam().get(i).getHasFainted().equals("yes")){
+					playerFaintSum ++;
+				}
+			}
+			System.out.println("\nPlayer faintSum = " + playerFaintSum);
+			if(playerFaintSum >= fightArena.getTeam().size()){
+				//return player lost
+				return 1;
+			} else {
+				//nothing
+			}
+		
+
+		//----------- Enemy lose check -----------
+			enemyFaintSum = 0;
+			for(int i = 0; i < fightArena.getEnemies().size(); i++){
+				if(fightArena.getEnemies().get(i).getHasFainted().equals("yes")){
+					enemyFaintSum ++;
+				}
+			}
+			System.out.println("\nEnemy faintSum = " + enemyFaintSum);
+			if(enemyFaintSum >= fightArena.getEnemies().size()){
+				//return enemy lost
+				return 2;
+			} else {
+				//nothing
+				return 0;
+			}
+		
+
+	}
+
 	public void attackPhase(String whoAttacks){
 
 		System.out.println("\n\n----------------------------------------------------------------------------------------------\n\n");
@@ -142,7 +184,8 @@ class Fight{
 					} else if (currentNommer().getSelfEffect().equals("heal")){
 						currentNommer().heal(damageDealtLocker);
 					} else if (currentNommer().getSelfEffect().equals("repeat")){
-						currentNommer().repeat(damageDealtLocker);
+						currentEnemyNommer().setHealth(currentEnemyNommer().getCurrentHealth() - currentNommer().repeat(damageDealtLocker));
+						System.out.println(currentEnemyNommer() + " now has " + currentEnemyNommer().getCurrentHealth() + " health.");
 					}
 				}
 			} else {
@@ -206,7 +249,8 @@ class Fight{
 					} else if (currentEnemyNommer().getSelfEffect().equals("heal")){
 						currentEnemyNommer().heal(damageDealtLocker);
 					} else if (currentEnemyNommer().getSelfEffect().equals("repeat")){
-						currentEnemyNommer().repeat(damageDealtLocker);
+						currentNommer().setHealth(currentNommer().getCurrentHealth() - currentEnemyNommer().repeat(damageDealtLocker));
+						System.out.println(currentNommer() + " now has " + currentNommer().getCurrentHealth() + " health.");
 					}
 				}
 			} else {
@@ -225,11 +269,11 @@ class Fight{
 			Nommer prevNommer = currentNommer() ;
 
 			if(faintOrSwitch == 0){ //faint
-				System.out.println(currentNommer() + " fainted!");
+				System.out.println("\n" + currentNommer() + " fainted!");
 				System.out.println("Player Status Effects cleared");
 				currentNommer().clearStatusEffect();
 			} else if (faintOrSwitch == 1) { //switch
-		 		System.out.println(currentNommer() + " switched out!");
+		 		System.out.println("\n" + currentNommer() + " switched out!");
 			}
 
 			while(faintedSwitchInLooper == 0){
@@ -284,7 +328,7 @@ class Fight{
 						for(int j = 0; j < fightArena.getEnemies().size(); j++){
 							if(!fightArena.getEnemies().get(j).getHasFainted().equals("yes")){
 								enemyNowNommer = j;
-								System.out.println(currentEnemyNommer() + " switched in!");
+								System.out.println("\n" + currentEnemyNommer() + " switched in!");
 								break;
 							} else {
 										
@@ -341,8 +385,16 @@ class Fight{
 	public void playerFaintOrSwitchCheck(){
 		if(currentNommer().getCurrentHealth() <= 0){
 			currentNommer().setHasFainted("yes");
-			switchOut("player",0);
+			mutualEndOfRoundChecker();
+
+			if(playerFaintSum>3){
+			
+			} else {
+				switchOut("player",0);
+			}
 		}
+
+		
 	}
 
 	public void playerEndOfRoundChecker(){
@@ -362,8 +414,16 @@ class Fight{
 	public void enemyFaintOrSwitchCheck(){
 		if(currentEnemyNommer().getCurrentHealth() <= 0){
 			currentEnemyNommer().setHasFainted("yes");
-			switchOut("enemy",0);
+			mutualEndOfRoundChecker();
+
+			if(enemyFaintSum>3){
+			
+			} else {
+				switchOut("enemy",0);
+			}
 		}
+
+		
 	}
 
 	public void enemyEndOfRoundChecker(){
@@ -382,36 +442,7 @@ class Fight{
 		System.out.println(currentEnemyNommer().getName() + " has " + currentEnemyNommer().getCurrentHealth() + " current health and a " + currentEnemyNommer().getStatusEffects() + " status effect");
 	}
 
-	public int mutualEndOfRoundChecker(){
-		//----------- Player lose check -----------
-			int faintSum = 0;
-			for(int i = 0; i < fightArena.getTeam().size(); i++){
-				if(fightArena.getTeam().get(i).getHasFainted().equals("yes")){
-					faintSum ++;
-				}
-			}
-			if(faintSum >= fightArena.getTeam().size()){
-				//return player lost
-				return 1;
-			} else {
-				//nothing
-			}
-
-		//----------- Enemy lose check -----------
-			faintSum = 0;
-			for(int i = 0; i < fightArena.getEnemies().size(); i++){
-				if(fightArena.getEnemies().get(i).getHasFainted().equals("yes")){
-					faintSum ++;
-				}
-			}
-			if(faintSum >= fightArena.getEnemies().size()){
-				//return enemy lost
-				return 2;
-			} else {
-				//nothing
-				return 0;
-			}
-	}
+	
 
 
 }
