@@ -45,7 +45,7 @@ class Main {
 			if(winOrLoseBreaker()){
 				break;
 			}
-
+			System.out.println("\n----------------------------------------------------------------------------------------------\n");
 			fight.playerTurn();
 
 			fight.playerFaintOrSwitchCheck();

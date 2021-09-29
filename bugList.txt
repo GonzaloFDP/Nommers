@@ -8,3 +8,7 @@
 				- Prevents from getting another status effect added because it
 					is occupied by the "no"
 			
+
+9/11/2021:
+	- Adding multiple attacks
+	- The attack infos all go in the same spots as before, but separated by slash and space (/ )

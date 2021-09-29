@@ -1,4 +1,5 @@
 import java.util.*;
+import java.lang.*;
 
 class Nommer {
 
@@ -11,12 +12,20 @@ class Nommer {
 	private String name;
 	private String type;
 	private int health, startingHealth;
-	private String attack;
+	private String attack, stringStartingAttackDamage;
 	private int attackDamage, startingAttackDamage, numberOfAttacks;
 	private String attackType;
 	private String attackEffect = "none";
 	private String selfEffect = "none";
 	private boolean isZapped = false;
+
+	private String[] attackList;
+	private int[] attackDamageList;
+		private String[] stringAttackDamageList;
+	private String[] attackTypeList;
+	private String[] attackEffectList;
+	private String[] selfEffectList;
+
 	/*
 	private String isBurned = "no";
 	private int burnCounter = 0;
@@ -24,7 +33,12 @@ class Nommer {
 	private int poisonCounter = 0;
 	*/
 	private ArrayList <String> statusEffects = new ArrayList();
-	private ArrayList <String> attacks = new ArrayList();
+	/*private ArrayList <String> attackList = new ArrayList();
+	private ArrayList <String> attackDamageList = new ArrayList();
+	private ArrayList <String> attackTypeList = new ArrayList();
+	private ArrayList <String> attackEffectList = new ArrayList();
+	private ArrayList <String> selfEffectList = new ArrayList();*/
+
 	HashMap<String, Integer> attackMap = new HashMap<>();
 	
 	public Nommer(String takenVals) {
@@ -38,21 +52,103 @@ class Nommer {
 		type = NommerValueArray[4];
 		numberOfAttacks = Integer.parseInt(NommerValueArray[5]);
 		attack = NommerValueArray[6];
-		startingAttackDamage = Integer.parseInt(NommerValueArray[7]);
+		//startingAttackDamage;
+		stringStartingAttackDamage = NommerValueArray[7];
 		attackDamage = startingAttackDamage;
 		attackType = NommerValueArray[8];
 		attackEffect = NommerValueArray[9];
 		selfEffect = NommerValueArray[10];
 
-		//I'll have to implement multiple attacks later lol
-		for(int i = 0; i< numberOfAttacks; i++){
+		if(numberOfAttacks == 1){
+
+			startingAttackDamage = Integer.parseInt(NommerValueArray[7]);
+
+			attackList = new String[1]; //AttackName
+			attackList[0] = attack;
+
+			attackDamageList = new int[1];
+			attackDamageList[0] = startingAttackDamage;
+
+			attackTypeList = new String[1]; 
+			attackTypeList[0] = attackType;
+
+			attackEffectList = new String[1]; //
+			attackEffectList[0] = attackEffect;
+
+			selfEffectList = new String[1]; //
+			selfEffectList[0] = selfEffect;
+
+			System.out.println(attackList[0]);
+			System.out.println(attackDamageList[0]);
+		}
+
+//String[] arrOfStr = str.split("@", 2);
+
+		//NEW CODE
+		else if(numberOfAttacks > 1){
+
+			attackList = new String[numberOfAttacks];
+			attackDamageList = new int[numberOfAttacks];
+			stringAttackDamageList = new String[numberOfAttacks];
+			attackTypeList = new String[numberOfAttacks];
+			attackEffectList = new String[numberOfAttacks];
+			selfEffectList = new String[numberOfAttacks];
+
+		
+			System.out.println("Nommer's attacks");
+
+				attackList = attack.split("/ ");
+
+				// string attack values split
+				stringAttackDamageList = stringStartingAttackDamage.split("/ ");
+				
+				//convert string to int
+
+				for(int i = 0; i < numberOfAttacks; i++){
+					attackDamageList[i] = Integer.parseInt(stringAttackDamageList[i]);
+				}
+
+				attackTypeList = attackType.split("/ ");
+				attackEffectList = attackEffect.split("/ ");
+				selfEffectList = selfEffect.split("/ ");
+
+
+				System.out.println(attackList[0]);
+				System.out.println(attackList[1]);
+				System.out.println(attackDamageList[0]);
+				System.out.println(attackDamageList[1]);
+				
+	  }
+		
+		//OLD CODE
+
+		/*for(int i = 0; i< numberOfAttacks; i++){
 			int attackParseCounter = (i+1) * 5 -1;
 			attackMap.put(NommerValueArray[attackParseCounter], Integer.parseInt(NommerValueArray[attackParseCounter+1]));
-		}
+		}*/
 	}
 
 	public String returnDescription(){
-		return name + ". A " + type + " type, weak against " + weakness + " types and resistance against " + resistance + " types. It has " + startingHealth + " health. It's main attack is " + attack + ", which deals " + attackDamage + " base damage. This attack's effect on the enemy is " + attackEffect + ". It's effect on the user is " + selfEffect + ".";
+		return name + ". A " + type + " type, weak against " + weakness + " types and resistance against " + resistance + " types. It has " + startingHealth + " health.";
+	}
+
+	public String returnAttacks(){
+		String attak;
+		String concatAttak;
+
+		if(numberOfAttacks == 1){
+			 return "It's main attack is " + attack + ", which deals " + attackDamage + " base damage. This attack's effect on the enemy is " + attackEffect + ". It's effect on the user is " + selfEffect + ".";
+		} else {
+			 attak = "It has " +  numberOfAttacks + " attacks.";
+			 for(int i = 0; i < numberOfAttacks; i++){
+				 int iPlus1 = i+= 1;
+				 concatAttak = " It's attack #" + iPlus1 + " is " + attackList[i] + ", which deals " + attackDamageList[i] + " base damage. This attack's effect on the enemy is " + attackEffectList[i] + ". It's effect on the user is " + selfEffectList[i] + ".";
+				 attak = attak.concat(concatAttak);
+				 
+			 }
+			 return attak;
+		}
+		
 	}
 
 	//status effects
@@ -117,7 +213,7 @@ class Nommer {
 	}
 
 	public int recoil(double damageDealt){
-		health -= (int)damageDealt/3;
+		health -= (int)damageDealt/2;
 		System.out.println("\n" + name + " got damaged by the recoil. They now have " + health + " health");
 		return health;
 	}
@@ -155,12 +251,29 @@ class Nommer {
 		return startingHealth;
 	}
 
-	public String getAttack(){
-		return attack;
+	public String getAttack(int i){
+		return attackList[i];
 	}
 
-	public int getBaseAttackDamage(){
-		return startingAttackDamage;
+	public String getAttackListString(){
+		return Arrays.toString(attackList);
+	}
+
+	public String[] getAttackList(){
+		return attackList;
+	}
+
+	public int getBaseAttackDamage(int i){
+		return attackDamageList[i];
+	}
+
+	public String getAttackDamageListString(){
+		String attackDamageListToString = Arrays.toString(attackDamageList);
+		return attackDamageListToString;
+	}
+
+	public int[] getAttackDamageList(){
+		return attackDamageList;
 	}
 
 	public HashMap<String, Integer> getAttackMap(){
@@ -183,12 +296,12 @@ class Nommer {
 		return hasFainted;
 	}
 
-	public String getAttackEffect(){
-		return attackEffect;
+	public String getAttackEffect(int i){
+		return attackEffectList[i];
 	}
 
-	public String getSelfEffect(){
-		return selfEffect;
+	public String getSelfEffect(int i){
+		return selfEffectList[i];
 	}
 
 	public int getTurnsWithEffect(){
