@@ -22,7 +22,6 @@ class Nommer {
 	private String[] attackList;
 	private int[] attackDamageList;
 		private String[] stringAttackDamageList;
-	private String[] attackTypeList;
 	private String[] attackEffectList;
 	private String[] selfEffectList;
 
@@ -51,13 +50,13 @@ class Nommer {
 		resistance = NommerValueArray[3];
 		type = NommerValueArray[4];
 		numberOfAttacks = Integer.parseInt(NommerValueArray[5]);
+
 		attack = NommerValueArray[6];
 		//startingAttackDamage;
 		stringStartingAttackDamage = NommerValueArray[7];
 		attackDamage = startingAttackDamage;
-		attackType = NommerValueArray[8];
-		attackEffect = NommerValueArray[9];
-		selfEffect = NommerValueArray[10];
+		attackEffect = NommerValueArray[8];
+		selfEffect = NommerValueArray[9];
 
 		if(numberOfAttacks == 1){
 
@@ -69,17 +68,14 @@ class Nommer {
 			attackDamageList = new int[1];
 			attackDamageList[0] = startingAttackDamage;
 
-			attackTypeList = new String[1]; 
-			attackTypeList[0] = attackType;
-
 			attackEffectList = new String[1]; //
 			attackEffectList[0] = attackEffect;
 
 			selfEffectList = new String[1]; //
 			selfEffectList[0] = selfEffect;
 
-			System.out.println(attackList[0]);
-			System.out.println(attackDamageList[0]);
+			/*System.out.println(attackList[0]);
+			System.out.println(attackDamageList[0]);*/
 		}
 
 //String[] arrOfStr = str.split("@", 2);
@@ -90,33 +86,26 @@ class Nommer {
 			attackList = new String[numberOfAttacks];
 			attackDamageList = new int[numberOfAttacks];
 			stringAttackDamageList = new String[numberOfAttacks];
-			attackTypeList = new String[numberOfAttacks];
 			attackEffectList = new String[numberOfAttacks];
 			selfEffectList = new String[numberOfAttacks];
-
-		
-			System.out.println("Nommer's attacks");
 
 				attackList = attack.split("/ ");
 
 				// string attack values split
-				stringAttackDamageList = stringStartingAttackDamage.split("/ ");
-				
+				stringAttackDamageList = stringStartingAttackDamage.split("/ ");				
 				//convert string to int
-
 				for(int i = 0; i < numberOfAttacks; i++){
 					attackDamageList[i] = Integer.parseInt(stringAttackDamageList[i]);
 				}
 
-				attackTypeList = attackType.split("/ ");
 				attackEffectList = attackEffect.split("/ ");
 				selfEffectList = selfEffect.split("/ ");
 
 
-				System.out.println(attackList[0]);
+			/*	System.out.println(attackList[0]);
 				System.out.println(attackList[1]);
 				System.out.println(attackDamageList[0]);
-				System.out.println(attackDamageList[1]);
+				System.out.println(attackDamageList[1]);*/
 				
 	  }
 		
@@ -141,10 +130,9 @@ class Nommer {
 		} else {
 			 attak = "It has " +  numberOfAttacks + " attacks.";
 			 for(int i = 0; i < numberOfAttacks; i++){
-				 int iPlus1 = i+= 1;
+				 int iPlus1 = i + 1;
 				 concatAttak = " It's attack #" + iPlus1 + " is " + attackList[i] + ", which deals " + attackDamageList[i] + " base damage. This attack's effect on the enemy is " + attackEffectList[i] + ". It's effect on the user is " + selfEffectList[i] + ".";
 				 attak = attak.concat(concatAttak);
-				 
 			 }
 			 return attak;
 		}
@@ -166,7 +154,7 @@ class Nommer {
 			return health;
 		} else {
 			System.out.println("\n" + name + " extinguished the fire");
-			int FXRemover = statusEffects.indexOf("burned");
+			int FXRemover = statusEffects.indexOf("burn");
 			statusEffects.remove(FXRemover);
 			turnsWithFX = 0;
 		}

@@ -32,11 +32,10 @@ class FoodFightArena {
 
 				String nommerVals = file.nextLine();
 				Nommerary.add(new Nommer(nommerVals));
+				
 				if(showDesc1Or2 == 1){
 					System.out.println(Nommerary.get(i).returnDescription() + "\n" + Nommerary.get(i).returnAttacks() + "\n");
 					Thread.sleep(500);
-				} else if(showDesc1Or2 == 2) {
-
 				} else {
 					
 				}

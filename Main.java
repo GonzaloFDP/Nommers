@@ -14,7 +14,7 @@ class Main {
 				return true;
 			} else if (fight.mutualEndOfRoundChecker() == 2){
 				System.out.println("Dang you won");
-				return false;
+				return true;
 			} else {
 				return false;
 			}

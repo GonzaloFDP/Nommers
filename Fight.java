@@ -142,8 +142,8 @@ class Fight{
 				int playerAttackChosen;
 				playerAttackChosen = attackChoose.nextInt() - 1;
 
-				System.out.println(currentNommer().getAttackList().length + "\n");
-				System.out.println(playerAttackChosen);
+				/*System.out.println(currentNommer().getAttackList().length + "\n");
+				System.out.println(playerAttackChosen);*/
 
 				while (playerAttackChosen < 0 && playerAttackChosen >= currentNommer().getAttackList().length - 1){
 					System.out.println("no");
@@ -215,7 +215,7 @@ class Fight{
 				enemyRandZap = rand.nextInt(10);
 		}
 		System.out.println("Enemy RandZap: " + enemyRandZap);
-		if(!currentEnemyNommer().getIsZapped() || enemyRandZap < 4){
+		if(!currentEnemyNommer().getIsZapped() || enemyRandZap < 6){
 				int enemyAttackChosen;
 				int numOfAttacks = currentEnemyNommer().getAttackList().length;				
 				Random randEnemyAttack = new Random();
@@ -260,10 +260,11 @@ class Fight{
 									currentNommer().setStatusEffect(currentEnemyNommer().getAttackEffect(enemyAttackChosen));
 									System.out.println("Wait a second! This move is causing an " + currentEnemyNommer().getAttackEffect(enemyAttackChosen) + " effect");
 								}
+						} else {
+
 						}
 				}
 				if(!currentEnemyNommer().getSelfEffect(enemyAttackChosen).equals("none")){
-
 					if(currentEnemyNommer().getSelfEffect(enemyAttackChosen).equals("recoil")){
 						currentEnemyNommer().recoil(damageDealtLocker);
 					} else if (currentEnemyNommer().getSelfEffect(enemyAttackChosen).equals("heal")){
@@ -309,11 +310,11 @@ class Fight{
 			}
 			if(fightArena.getTeam().get(nommerChosenToFight-1).getName().equals(currentNommer().getName())){
 				nowNommer = nommerChosenToFight - 1;
-				System.out.println("Player Status Effects not cleared, since it is the same Nommer");
+				//System.out.println("Player Status Effects not cleared, since it is the same Nommer");
 			} else {
 				nowNommer = nommerChosenToFight - 1;
 				currentNommer().clearStatusEffect();
-				System.out.println("Player Status Effects cleared");
+				//System.out.println("Player Status Effects cleared");
 			}
 			System.out.printf("You choose %s!\n", fightArena.getTeam().get(nommerChosenToFight-1));
 			System.out.printf("Your %s has %d health. The enemy %s has %d health\n", currentNommer(), currentNommer().getCurrentHealth(), currentEnemyNommer(), currentEnemyNommer().getCurrentHealth());
@@ -395,7 +396,7 @@ class Fight{
 						
 					}
 				currentEnemyNommer().clearStatusEffect();
-				System.out.println("Enemy Status Effects cleared");
+				//System.out.println("Enemy Status Effects cleared");
 				} 
 
 			
@@ -403,13 +404,13 @@ class Fight{
 	
 
 	public void playerFaintOrSwitchCheck(){
-		System.out.println("Player faint or switch check");
+	//	System.out.println("Player faint or switch check");
 		System.out.println("Player health: " + currentNommer().getCurrentHealth());
 		if(currentNommer().getCurrentHealth() <= 0){
 			currentNommer().setHasFainted("yes");
 			mutualEndOfRoundChecker();
 
-			if(playerFaintSum>3){
+			if(playerFaintSum>=4){
 			
 			} else {
 				switchOut("player",0);
@@ -434,13 +435,13 @@ class Fight{
 	}
 
 	public void enemyFaintOrSwitchCheck(){
-		System.out.println("Enemy faint or switch check");
+	//	System.out.println("Enemy faint or switch check");
 		System.out.println("Enemy health: " + currentEnemyNommer().getCurrentHealth());
 		if(currentEnemyNommer().getCurrentHealth() <= 0){
 			currentEnemyNommer().setHasFainted("yes");
 			mutualEndOfRoundChecker();
 
-			if(enemyFaintSum>3){
+			if(enemyFaintSum >= fightArena.getEnemies().size()){
 			
 			} else {
 				switchOut("enemy",0);
